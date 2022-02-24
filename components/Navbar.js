@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { signIn, signOut } from "next-auth/react";
 
 const Navbar = () => {
   return (
@@ -34,7 +35,13 @@ const Navbar = () => {
         <div>
           {" "}
           <Link href="/logout">
-            <button className="mx-3 btn btn-danger py-2 px-4 rounded-pill">
+            <button
+              className="mx-3 btn btn-danger py-2 px-4 rounded-pill"
+              onClick={(e) => {
+                e.preventDefault();
+                signOut();
+              }}
+            >
               Logout
             </button>
           </Link>
@@ -42,7 +49,13 @@ const Navbar = () => {
         <div>
           {" "}
           <Link href="/login">
-            <button className="mx-3 btn btn-warning py-2 px-4 rounded-pill">
+            <button
+              className="mx-3 btn btn-warning py-2 px-4 rounded-pill"
+              onClick={(e) => {
+                e.preventDefault();
+                signIn();
+              }}
+            >
               Login
             </button>
           </Link>
