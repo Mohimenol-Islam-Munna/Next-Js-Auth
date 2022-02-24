@@ -1,8 +1,13 @@
 import React from "react";
 import Link from "next/link";
-import { signIn, signOut } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
+  const { data: session, status } = useSession();
+
+  console.log("session session : ", session);
+  console.log("session status : ", status);
+
   return (
     <div>
       <div className="d-flex justify-content-center py-2 px-4 border w-75 border-warning mx-auto rounded">
@@ -32,34 +37,39 @@ const Navbar = () => {
             </button>
           </Link>
         </div>
-        <div>
-          {" "}
-          <Link href="/logout">
-            <button
-              className="mx-3 btn btn-danger py-2 px-4 rounded-pill"
-              onClick={(e) => {
-                e.preventDefault();
-                signOut();
-              }}
-            >
-              Logout
-            </button>
-          </Link>
-        </div>
-        <div>
-          {" "}
-          <Link href="/login">
-            <button
-              className="mx-3 btn btn-warning py-2 px-4 rounded-pill"
-              onClick={(e) => {
-                e.preventDefault();
-                signIn();
-              }}
-            >
-              Login
-            </button>
-          </Link>
-        </div>
+
+        {session && status === "authenticated" && (
+          <div>
+            {" "}
+            <Link href="/logout">
+              <button
+                className="mx-3 btn btn-danger py-2 px-4 rounded-pill"
+                onClick={(e) => {
+                  e.preventDefault();
+                  signOut();
+                }}
+              >
+                Logout
+              </button>
+            </Link>
+          </div>
+        )}
+
+        {!session && status === "unauthenticated" && (
+          <div>
+            <Link href="/login">
+              <button
+                className="mx-3 btn btn-warning py-2 px-4 rounded-pill"
+                onClick={(e) => {
+                  e.preventDefault();
+                  signIn();
+                }}
+              >
+                Login
+              </button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
